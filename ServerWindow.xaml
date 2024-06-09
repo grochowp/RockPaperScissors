@@ -1,0 +1,12 @@
+﻿<Window x:Class="KlientSerwer.ServerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KlientSerwer"
+        mc:Ignorable="d"
+        Title="Server" Height="450" Width="800">
+    <Grid>
+        <TextBox x:Name="tbMessage" HorizontalAlignment="Left" Margin="37,312,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="171" Height="83" VerticalScrollBarVisibility="Auto"/>
+    </Grid>
+</Window>

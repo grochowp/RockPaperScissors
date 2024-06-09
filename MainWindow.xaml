@@ -7,10 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <GridSplitter HorizontalAlignment="Left" Height="434" Margin="242,0,0,0" VerticalAlignment="Center" Width="11" DragDelta="GridSplitter_DragDelta"/>
-        <Button Content="Włącz serwer" HorizontalAlignment="Left" Margin="78,287,0,0" VerticalAlignment="Top" Height="36" Width="98"/>
-        <TextBox HorizontalAlignment="Left" Margin="67,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Wprowadź numer portu:" HorizontalAlignment="Left" Margin="67,101,0,0" VerticalAlignment="Top"/>
-
+        <Button Content="Włącz serwer" HorizontalAlignment="Left" Margin="74,217,0,0" VerticalAlignment="Top" Height="36" Width="98" Click="StartServer_Click"/>
+        <TextBox x:Name="PortTextBox" HorizontalAlignment="Left" Margin="37,136,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="171"/>
+        <Label Content="Wprowadź numer portu:" HorizontalAlignment="Left" Margin="53,96,0,0" VerticalAlignment="Top"/>
+        <Button Content="Dodaj gracza" HorizontalAlignment="Left" Margin="473,217,0,0" VerticalAlignment="Top" Height="36" Width="120" Click="AddPlayer_Click"/>
+        <TextBox x:Name="IPTextBox" HorizontalAlignment="Center" Margin="0,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Text="127.0.0.1"/>
+        <TextBox x:Name="PortPlayerTextBox" HorizontalAlignment="Left" Margin="579,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
+        <Label Content="Wprowadź adres IP:" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top"/>
+        <Label Content="Wprowadź numer portu:" HorizontalAlignment="Left" Margin="587,96,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

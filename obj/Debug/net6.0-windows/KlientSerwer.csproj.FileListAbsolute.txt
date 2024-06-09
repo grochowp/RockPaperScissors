@@ -1,0 +1,5 @@
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net6.0-windows\KlientSerwer.csproj.AssemblyReference.cache
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net6.0-windows\KlientSerwer_MarkupCompile.cache
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net6.0-windows\KlientSerwer_MarkupCompile.lref
