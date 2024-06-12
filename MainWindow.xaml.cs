@@ -8,6 +8,7 @@ namespace KlientSerwer
 {
     public partial class MainWindow : Window
     {
+        private ServerWindow serverWindow;
 
         public MainWindow()
         {
@@ -27,6 +28,7 @@ namespace KlientSerwer
         {
             int port = int.Parse(PortPlayerTextBox.Text);
             string addressIP = IPTextBox.Text;
+
             TcpClient client = new TcpClient(addressIP, port);
             Client clientWindow = new Client(client);
             clientWindow.Show();

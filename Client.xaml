@@ -5,14 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KlientSerwer"
         mc:Ignorable="d"
-        Title="Client" Height="450" Width="800">
+        Title="Client" Height="300" Width="500">
     <Grid>
-        <Label Content="Choose Rock, Paper, or Scissors:" HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0">
-            <Button Content="Rock" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click"/>
-            <Button Content="Paper" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click"/>
-            <Button Content="Scissors" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click"/>
+        <Label Content="Wybierz Kamień, Papier lub Nożyce:" HorizontalAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <StackPanel x:Name="choicePanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,72,0,0" >
+            <Button x:Name="rockButton" Content="Kamień" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click"/>
+            <Button x:Name="paperButton" Content="Papier" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click" RenderTransformOrigin="0.533,0.237"/>
+            <Button x:Name="scissorsButton" Content="Nożyce" Width="100" Height="50" Margin="10" Click="ChoiceButton_Click"/>
         </StackPanel>
-        <Label x:Name="ResultLabel" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Red"/>
+        <Label x:Name="ResultLabel" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="Red" Margin="0,142,0,0"/>
+        <Label x:Name="Player1Result" Content="Gracz 1 - 0" HorizontalAlignment="Left" Margin="25,194,0,0" VerticalAlignment="Top" Width="129"/>
+        <Label x:Name="Player2Result" Content="Gracz 2 - 0" HorizontalAlignment="Left" Margin="25,225,0,0" VerticalAlignment="Top" Width="117"/>
+        <Button x:Name="ResetButton" Content="Reset" Margin="370,207,0,0" VerticalAlignment="Top" Height="36" HorizontalAlignment="Left" Width="99" Click="Reset_Click"/>
+        <Button x:Name="ApproveResetButton" Content="Zatwierdź reset" Margin="370,207,0,0" VerticalAlignment="Top" Height="36" HorizontalAlignment="Left" Width="99" Visibility="Collapsed" Click="ApproveResetButton_Click"/>
+        <Button x:Name="DenyResetButton" Content="Odmów resetu" Margin="250,207,0,0" VerticalAlignment="Top" Height="36" HorizontalAlignment="Left" Width="99" Visibility="Collapsed" Click="DenyResetButton_Click"/>
+
     </Grid>
 </Window>

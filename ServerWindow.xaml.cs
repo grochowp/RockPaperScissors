@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Net.Sockets;
-using System.Text;
+
 using System.Threading;
-using System.Threading.Tasks;
+
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Sockets.TcpListener;
-using static System.Net.Sockets.TcpClient;
-using System.Threading;
+
 using System.Windows.Threading;
 using System.IO;
 
@@ -34,7 +21,10 @@ namespace KlientSerwer
         private List<TcpClient> clients;
         private Thread serverThread;
         private bool isRunning;
+
         private Dictionary<TcpClient, string> clientChoices;
+        private int player1Wins = 0;
+        private int player2Wins = 0;
 
         public ServerWindow(string AddressIP, int Port)
         {
@@ -47,7 +37,6 @@ namespace KlientSerwer
             LogMessage($"Serwer wystartował na porcie {Port} \n");
         }
 
-
         public void ServerListen()
         {
             try
@@ -58,7 +47,7 @@ namespace KlientSerwer
                     if (tcpClient != null)
                     {
                         clients.Add(tcpClient);
-                        LogMessage($"{tcpClient.Client.RemoteEndPoint} has connected");
+                        LogMessage($"{tcpClient.Client.RemoteEndPoint} się połączył \n");
                         HandleClient(tcpClient);
                     }
                 }
@@ -72,9 +61,24 @@ namespace KlientSerwer
                 LogMessage($"Exception: {ex.Message}");
             }
         }
+
+        public void StopServer()
+        {
+            isRunning = false;
+            tcpListener.Stop();
+            serverThread.Join();
+        }
+
+        public void StartServer()
+        {
+            isRunning = true;
+            serverThread = new Thread(ServerListen) { IsBackground = true };
+            serverThread.Start();
+        }
+
         private void HandleClient(TcpClient tcpClient)
         {
-            var clientThread = new Thread(async () =>
+            Thread clientThread = new Thread(async () =>
             {
                 var reader = new StreamReader(tcpClient.GetStream());
                 while (tcpClient.Connected)
@@ -82,12 +86,28 @@ namespace KlientSerwer
                     string choice = await reader.ReadLineAsync();
                     if (!string.IsNullOrEmpty(choice))
                     {
-                        lock (clientChoices)
+                        if (choice == "RESET_REQUEST")
                         {
-                            clientChoices[tcpClient] = choice;
-                            if (clientChoices.Count == 2)
+                            BroadcastMessage("RESET_REQUEST", tcpClient);
+                        }
+                        else if (choice == "RESET_APPROVE")
+                        {
+                            ResetScores();
+                            BroadcastMessage("RESET_APPROVED", null);
+                        }
+                        else if (choice == "RESET_DENY")
+                        {
+                            BroadcastMessage("RESET_DENIED", null);
+                        }
+                        else
+                        {
+                            lock (clientChoices)
                             {
-                                DetermineWinner();
+                                clientChoices[tcpClient] = choice;
+                                if (clientChoices.Count == 2)
+                                {
+                                    DetermineWinner();
+                                }
                             }
                         }
                     }
@@ -99,50 +119,61 @@ namespace KlientSerwer
 
         private void DetermineWinner()
         {
-            var choices = new List<string>(clientChoices.Values);
+            List<string> choices = new List<string>(clientChoices.Values);
             string result;
 
             if (choices[0] == choices[1])
             {
-                result = "It's a draw!";
+                result = "Remis!";
             }
-            else if ((choices[0] == "Rock" && choices[1] == "Scissors") ||
-                     (choices[0] == "Scissors" && choices[1] == "Paper") ||
-                     (choices[0] == "Paper" && choices[1] == "Rock"))
+            else if ((choices[0] == "Kamień" && choices[1] == "Nożyce") ||
+                     (choices[0] == "Nożyce" && choices[1] == "Papier") ||
+                     (choices[0] == "Papier" && choices[1] == "Kamień"))
             {
-                result = "Player 1 wins!";
+                result = "Gracz 1 wygrywa!";
+                player1Wins++;
             }
             else
             {
-                result = "Player 2 wins!";
+                result = "Gracz 2 wygrywa!";
+                player2Wins++;
             }
 
             BroadcastResult(result);
             clientChoices.Clear();
         }
 
+        private void ResetScores()
+        {
+            player1Wins = 0;
+            player2Wins = 0;
+            BroadcastResult("Gra została zresetowana");
+        }
+
+
         private void BroadcastResult(string result)
         {
             foreach (var client in clients)
             {
-                var writer = new StreamWriter(client.GetStream()) { AutoFlush = true };
+                StreamWriter writer = new StreamWriter(client.GetStream()) { AutoFlush = true };
                 writer.WriteLine(result);
+                writer.WriteLine($"Gracz 1 - {player1Wins}");
+                writer.WriteLine($"Gracz 2 - {player2Wins}");
             }
 
             Dispatcher.Invoke(() => tbMessage.Text += result + "\n");
         }
 
-        public void StartServer()
+        private void BroadcastMessage(string message, TcpClient excludeClient)
         {
-            isRunning = true;
-            serverThread = new Thread(ServerListen) { IsBackground = true };
-            serverThread.Start();
-        }
-
-        public void StopServer() { 
-            isRunning = false;
-            tcpListener.Stop();
-            serverThread.Join();
+            foreach (var client in clients)
+            {
+                if (client != excludeClient)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream()) { AutoFlush = true };
+                    writer.WriteLine(message);
+                }
+            }
         }
 
         public void LogMessage(string mes)
@@ -152,6 +183,5 @@ namespace KlientSerwer
                 this.tbMessage.Text += mes;
             });
         }
-
     }
 }

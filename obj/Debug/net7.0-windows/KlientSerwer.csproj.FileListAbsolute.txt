@@ -23,3 +23,4 @@ C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net7.0-windows\Client.g.cs
 C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net7.0-windows\Client.baml
 C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net7.0-windows\ServerWindow.g.cs
 C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net7.0-windows\ServerWindow.baml
+C:\Users\Patryk\Desktop\c#\KlientSerwer\obj\Debug\net7.0-windows\GeneratedInternalTypeHelper.g.cs

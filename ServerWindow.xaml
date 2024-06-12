@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KlientSerwer"
         mc:Ignorable="d"
-        Title="Server" Height="450" Width="800">
+        Title="Server" Height="350" Width="200">
     <Grid>
-        <TextBox x:Name="tbMessage" HorizontalAlignment="Left" Margin="37,312,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="171" Height="83" VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="tbMessage" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="160" Height="271" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
