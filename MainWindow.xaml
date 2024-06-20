@@ -17,6 +17,6 @@
         <Label Content="Wprowadź adres IP:" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top"/>
         <Label Content="Wprowadź numer portu:" HorizontalAlignment="Left" Margin="587,96,0,0" VerticalAlignment="Top"/>
         <Label Content="Nazwa gracza:" HorizontalAlignment="Left" Margin="494,199,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="NickTextBox" HorizontalAlignment="Left" Margin="457,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" IsEnabled="False"/>
+        <TextBox x:Name="NickTextBox" HorizontalAlignment="Left" Margin="457,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160"/>
     </Grid>
 </Window>

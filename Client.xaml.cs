@@ -13,16 +13,49 @@ namespace KlientSerwer
         private TcpClient client; // Klient TCP
         private StreamWriter writer; // Writer do wysylania danych do serwera
         private StreamReader reader; // Reader do odbierania danych z serwera
+        private string username; // Nazwa uzytkownika
 
-        public Client(TcpClient client)
+        public Client(TcpClient client, string username)
         {
+            
             InitializeComponent();
             this.client = client;
             this.writer = new StreamWriter(this.client.GetStream()) { AutoFlush = true }; // Inicjalizacja writera
             this.reader = new StreamReader(this.client.GetStream()); // Inicjalizacja readera
+            this.username = username; // Inicjalizacja nazwy użytkownika
+            SendUsernameToServer(); // Wysłanie nazwy uzytkownika do serwera
+            this.Title = $"Klient - {username}"; // Zmiana tytulu okienka klienta
             Task.Run(ListenForResults);  // Uruchomienie watku nasluchujacego wyniki z serwera
-        }
 
+        this.Closed += Client_Closed;
+    }
+
+    private async void Client_Closed(object sender, EventArgs e)
+    {
+        // Powiadomienie serwera o rozłączeniu klienta
+        try
+        {
+            await this.writer.WriteLineAsync("CLIENT_DISCONNECTED");
+            await this.writer.FlushAsync();
+        }
+        catch (Exception ex)
+        {
+            // Obsługa błędów
+            Console.WriteLine($"Błąd przy wysyłaniu informacji o rozłączeniu: {ex.Message}");
+        }
+        finally
+        {
+            // Zamknięcie strumieni i klienta
+            this.writer.Close();
+            this.reader.Close();
+            this.client.Close();
+        }
+    }
+
+        private async void SendUsernameToServer()
+        {
+            await writer.WriteLineAsync($"USERNAME:{username}");
+        }
 
         // Obsluga klikniecia przycisku dla wyboru jednej z trzech opcji
         private async void ChoiceButton_Click(object sender, RoutedEventArgs e)
@@ -76,20 +109,35 @@ namespace KlientSerwer
                             ToggleResetApprovalButtons(true); // Wlaczenie przyciskow odmowy/zgody na reset
                         });
                     }
-                    else if (message == "RESET_APPROVED")
-                    {
-                        Dispatcher.Invoke(ResetScores); // wywolanie resetu wynikow
-                    }
+
                     else if (message == "RESET_DENIED")
                     {
                         Dispatcher.Invoke(() => ResultLabel.Content = "Odmowa restartu.");
                     }
-                    else
+                    else if (message.StartsWith("PLAYER_COUNT"))
                     {
-                        // Wyswietlenie wyniku gry oraz wlaczenie przyciskow odmowy/zgody na reset
+                        int playerCount = int.Parse(message.Split(':')[1]);
                         Dispatcher.Invoke(() =>
                         {
-                            ResultLabel.Content = message;
+                            if (playerCount < 2)
+                            {
+                                ResultLabel.Content = "Jestes sam. Brak drugiego gracza.";
+                            }
+                            else
+                            {
+                                ResultLabel.Content = "Drugi gracz jest podłączony.";
+                            }
+                        });
+                    }
+                    else if (message.StartsWith("RESULT"))
+                    {
+                        string result = message.Substring(7); // Usunięcie "RESULT:"
+
+                        // Wyswietlenie wyniku gry oraz wlaczenie przyciskow odmowy/zgody na reset
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            ResultLabel.Content = result;
                             ToggleChoiceButtons(true);
                         });
 
@@ -111,11 +159,7 @@ namespace KlientSerwer
         }
 
         // Metoda resetujaca labele z wynikami
-        private void ResetScores()
-        {
-            Player1Result.Content = "Gracz 1 - 0";
-            Player2Result.Content = "Gracz 2 - 0";
-        }
+       
 
         // Metoda zmieniajaca widocznosc przyciskow do odrzucenia/akceptacji resetu
         private void ToggleResetApprovalButtons(bool show)

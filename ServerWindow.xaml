@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Server" Height="350" Width="200">
     <Grid>
-        <TextBox x:Name="tbMessage" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="160" Height="271" VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="tbMessage" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="160" Height="271" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
